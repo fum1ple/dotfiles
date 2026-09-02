@@ -8,5 +8,5 @@ if [ -d "$HOME/dotfiles/.git" ]; then
 else
   git clone --depth 1 -q "$REPO_URL" "$HOME/dotfiles"
 fi
-"$HOME/dotfiles/install.sh"
+bash "$HOME/dotfiles/install.sh"
 exit 0
