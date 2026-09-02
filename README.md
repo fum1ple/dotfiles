@@ -16,7 +16,7 @@ install.sh            展開スクリプト
 ## ローカル
 ```
 git clone git@github.com:fum1ple/dotfiles.git ~/dotfiles
-~/dotfiles/install.sh
+bash ~/dotfiles/install.sh
 ```
 Codex を再起動し、`/skills` で5本＋2本が見えることを確認する。
 
