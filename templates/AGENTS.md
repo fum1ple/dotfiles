@@ -2,6 +2,8 @@
 
 このファイルは目次です。詳細は各スキル（`$investigate` `$basic-design` `$implement` `$code-review` `$deliver`）を参照すること。
 
+開発上の判断基準は `~/.agents/principles.md`、文章の基準は `~/.agents/writing.md` を参照する。日本語スキルの適用範囲と実行モードは `~/.codex/AGENTS.md` に従う。
+
 ## 作業の進め方
 - 要件・課題・バグを受け取ったら、いきなり実装せず `$investigate` から始める
 - フェーズ: investigate（調査・対応方針）→ basic-design（基本設計）→ implement（実装）→ code-review（レビュー）→ deliver（納品）

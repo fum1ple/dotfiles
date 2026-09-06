@@ -4,3 +4,5 @@
 - `make_pr` ツールは Codex cloud 専用。Claude Code では `gh pr create` で PR を作る
 
 @~/dotfiles/codex/AGENTS.md
+@~/.agents/principles.md
+@~/.agents/writing.md
