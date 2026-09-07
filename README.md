@@ -5,10 +5,11 @@ Codex と Claude Code で共通に使う個人設定。対象リポジトリに�
 ```
 agents/skills/        自作スキル5本（investigate / basic-design / implement / code-review / deliver）
                       → ~/.agents/skills/（Codex）と ~/.claude/skills/（Claude Code）の両方に symlink
+agents/AGENTS.md      Codex / Claude Code 共通の作業指示 → ~/.agents/AGENTS.md
 agents/principles.md  開発上の判断基準 → ~/.agents/principles.md
 agents/writing.md     文章の構成・日本語・レビュー文体 → ~/.agents/writing.md
 codex/AGENTS.md       個人の作業指示。Codex ローカルは ~/.codex/AGENTS.md、cloud は作業リポジトリ直下（git 除外）
-claude/CLAUDE.md      Claude Code 用の薄いラッパー。~/.claude/CLAUDE.md から import され、codex/AGENTS.md を読み込む
+claude/CLAUDE.md      Claude Code 用の設定本体。~/.claude/CLAUDE.md から import され、共通指示・原則・文章基準を読み込む
 templates/AGENTS.md   リポジトリに AGENTS.md を置いてよい場合の雛形（コマンド・Review guidelines）
 cloud/codex-setup.sh  Codex cloud 環境の Setup script
 install.sh            展開スクリプト
@@ -27,6 +28,22 @@ bash ~/dotfiles/install.sh
 ```
 - Codex: 次のターンで `natural-japanese` が使えることを確認。個人指示全体の読み込みは新しいタスクで確認する。呼び出しは `$investigate`
 - Claude Code: 再起動して `/investigate` 等が補完に出ることを確認。`~/.claude/CLAUDE.md` に `@~/dotfiles/claude/CLAUDE.md` が追記されている（既存の内容は残る）
+
+指示の正本はこのリポジトリに置く。`~/.claude/CLAUDE.md` は `claude/CLAUDE.md` への import 1 行だけにして、指示そのものは書かない。ホーム側に直接書くと、同じファイルを 2 経路から import して二重に読み込む状態になりやすい。読み込みの経路は次のとおり。
+
+```
+@ = import 行   -> = symlink
+
+Claude Code
+  ~/.claude/CLAUDE.md  @  claude/CLAUDE.md
+                          ├─ @ ~/.agents/AGENTS.md      ->  agents/AGENTS.md
+                          ├─ @ ~/dotfiles/codex/AGENTS.md
+                          ├─ @ ~/.agents/principles.md  ->  agents/principles.md
+                          └─ @ ~/.agents/writing.md     ->  agents/writing.md
+
+Codex
+  ~/.codex/AGENTS.md   ->  codex/AGENTS.md
+```
 
 原則・文章基準・日本語スキルだけを配置する場合:
 

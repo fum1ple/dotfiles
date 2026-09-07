@@ -17,7 +17,7 @@ cleanup() {
 }
 trap cleanup EXIT
 
-for rule in principles writing; do
+for rule in AGENTS principles writing; do
   if [ ! -f "$HERE/agents/$rule.md" ]; then
     echo "Missing rule: $HERE/agents/$rule.md" >&2
     exit 1
@@ -56,6 +56,7 @@ link_preserving() { # <source> <destination>
   ln -s "$source" "$destination"
 }
 
+link_preserving "$HERE/agents/AGENTS.md" "$TARGET_ROOT/.agents/AGENTS.md"
 link_preserving "$HERE/agents/principles.md" "$TARGET_ROOT/.agents/principles.md"
 link_preserving "$HERE/agents/writing.md" "$TARGET_ROOT/.agents/writing.md"
 link_preserving "$NATURAL_DIR/skills/natural-japanese" "$TARGET_ROOT/.agents/skills/natural-japanese"

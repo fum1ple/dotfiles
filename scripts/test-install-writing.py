@@ -42,6 +42,7 @@ fi
                 subprocess.run(command, env=environment, check=True, capture_output=True, text=True)
             self.assertEqual(old_principles.resolve(), source / "agents/principles.md")
             self.assertEqual((agents / "writing.md").resolve(), source / "agents/writing.md")
+            self.assertEqual((agents / "AGENTS.md").resolve(), source / "agents/AGENTS.md")
             codex_skill = agents / "skills/natural-japanese"
             claude_skill = destination / ".claude/skills/natural-japanese"
             self.assertEqual(codex_skill.resolve(), claude_skill.resolve())
@@ -71,6 +72,7 @@ fi
             self.assertNotEqual(result.returncode, 0)
             self.assertEqual((agents / "principles.md").read_text(), "current rules\n")
             self.assertFalse((agents / "writing.md").exists())
+            self.assertFalse((agents / "AGENTS.md").exists())
 
 
 if __name__ == "__main__":
