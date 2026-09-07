@@ -36,5 +36,8 @@ IMPORT_LINE="@$HERE/claude/CLAUDE.md"
 touch "$HOME/.claude/CLAUDE.md"
 grep -qxF "$IMPORT_LINE" "$HOME/.claude/CLAUDE.md" || printf '\n%s\n' "$IMPORT_LINE" >> "$HOME/.claude/CLAUDE.md"
 
+# 4. 開発原則・文章基準・日本語スキル
+bash "$HERE/scripts/install-writing.sh"
+
 echo "Codex skills (~/.agents/skills):";  ls -1 "$HOME/.agents/skills"
 echo "Claude Code skills (~/.claude/skills):"; ls -1 "$HOME/.claude/skills"
