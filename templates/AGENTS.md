@@ -2,7 +2,7 @@
 
 このファイルは目次です。詳細は各スキル（`$investigate` `$basic-design` `$implement` `$code-review` `$deliver`）を参照すること。
 
-開発上の判断基準は `~/.agents/principles.md`、文章の基準は `~/.agents/writing.md` を参照する。日本語スキルの適用範囲と実行モードは `~/.codex/AGENTS.md` に従う。
+開発上の判断基準は `~/.agents/principles.md`、文章の基準は `~/.agents/writing.md` を参照する。文章スキルの適用範囲と実行モードは `~/.agents/AGENTS.md` に従う。すべての文章出力に `writing.md` と `$yomiyasu` を適用し、明示された `$natural-japanese` の対象文章には両スキルを重ねない。
 
 ## 作業の進め方
 - 要件・課題・バグを受け取ったら、いきなり実装せず `$investigate` から始める
