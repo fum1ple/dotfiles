@@ -64,17 +64,19 @@ mkdir -p "$VENDOR"
 fetch_pinned_skill natural-japanese https://github.com/coji/natural-japanese.git "$NATURAL_REF"
 fetch_pinned_skill yomiyasu https://github.com/nanaism/yomiyasu.git "$YOMIYASU_REF"
 
-# プラグインの設定を含めず、個人スキルとして同じ上流ファイルを参照する。
+# 本文を通常ファイルに配置し、個人スキルとして両方から参照する。
 if [ ! -e "$YOMIYASU_DIR/agent-skill" ]; then
   STAGING_DIR="$(mktemp -d "$YOMIYASU_DIR/.agent-skill.XXXXXX")"
-  for resource in SKILL.md scripts references assets; do
+  cp "$YOMIYASU_DIR/skills/yomiyasu/SKILL.md" "$STAGING_DIR/SKILL.md"
+  for resource in scripts references assets; do
     ln -s "../skills/yomiyasu/$resource" "$STAGING_DIR/$resource"
   done
   ln -s ../LICENSE "$STAGING_DIR/LICENSE"
   mv "$STAGING_DIR" "$YOMIYASU_DIR/agent-skill"
   STAGING_DIR=""
 fi
-if [ ! -f "$YOMIYASU_DIR/agent-skill/SKILL.md" ] || [ ! -f "$YOMIYASU_DIR/agent-skill/scripts/yomiyasu_lint.py" ] \
+if [ ! -f "$YOMIYASU_DIR/agent-skill/SKILL.md" ] || [ -L "$YOMIYASU_DIR/agent-skill/SKILL.md" ] \
+  || [ ! -f "$YOMIYASU_DIR/agent-skill/scripts/yomiyasu_lint.py" ] \
   || [ -e "$YOMIYASU_DIR/agent-skill/.claude-plugin" ]; then
   echo "Invalid yomiyasu skill directory: $YOMIYASU_DIR/agent-skill" >&2
   exit 1

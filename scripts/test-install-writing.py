@@ -105,6 +105,7 @@ class WritingInstallationTest(unittest.TestCase):
             self.assertEqual((upstream.parents[1] / ".test-ref").read_text(), ref)
             self.assertFalse((codex / name).exists())
         yomiyasu = agents / "skills/yomiyasu"
+        self.assertFalse((yomiyasu / "SKILL.md").is_symlink())
         self.assertFalse((yomiyasu / ".claude-plugin").exists())
         self.assertTrue((yomiyasu / "LICENSE").is_file())
         for file in ("scripts/yomiyasu_lint.py", "references/gemini-syntax.md",
