@@ -11,6 +11,7 @@ NATURAL_REF=9a78a42964096da509b8f3e011f0085a5f080151
 NATURAL_DIR="$VENDOR/natural-japanese-$NATURAL_REF"
 YOMIYASU_REF=30ee6041c328ce21d38a7963f667e079a93d7a12
 YOMIYASU_DIR="$VENDOR/yomiyasu-$YOMIYASU_REF"
+YOMIYASU_SKILL_DIR="$VENDOR/yomiyasu-skill-$YOMIYASU_REF"
 BACKUP_DIR=""
 STAGING_DIR=""
 
@@ -64,21 +65,21 @@ mkdir -p "$VENDOR"
 fetch_pinned_skill natural-japanese https://github.com/coji/natural-japanese.git "$NATURAL_REF"
 fetch_pinned_skill yomiyasu https://github.com/nanaism/yomiyasu.git "$YOMIYASU_REF"
 
-# 本文を通常ファイルに配置し、個人スキルとして両方から参照する。
-if [ ! -e "$YOMIYASU_DIR/agent-skill" ]; then
-  STAGING_DIR="$(mktemp -d "$YOMIYASU_DIR/.agent-skill.XXXXXX")"
+# 上流プラグインの外に本文を配置し、個人スキルとして両方から参照する。
+if [ ! -e "$YOMIYASU_SKILL_DIR" ]; then
+  STAGING_DIR="$(mktemp -d "$VENDOR/.yomiyasu-skill.XXXXXX")"
   cp "$YOMIYASU_DIR/skills/yomiyasu/SKILL.md" "$STAGING_DIR/SKILL.md"
   for resource in scripts references assets; do
-    ln -s "../skills/yomiyasu/$resource" "$STAGING_DIR/$resource"
+    ln -s "../yomiyasu-$YOMIYASU_REF/skills/yomiyasu/$resource" "$STAGING_DIR/$resource"
   done
-  ln -s ../LICENSE "$STAGING_DIR/LICENSE"
-  mv "$STAGING_DIR" "$YOMIYASU_DIR/agent-skill"
+  ln -s "../yomiyasu-$YOMIYASU_REF/LICENSE" "$STAGING_DIR/LICENSE"
+  mv "$STAGING_DIR" "$YOMIYASU_SKILL_DIR"
   STAGING_DIR=""
 fi
-if [ ! -f "$YOMIYASU_DIR/agent-skill/SKILL.md" ] || [ -L "$YOMIYASU_DIR/agent-skill/SKILL.md" ] \
-  || [ ! -f "$YOMIYASU_DIR/agent-skill/scripts/yomiyasu_lint.py" ] \
-  || [ -e "$YOMIYASU_DIR/agent-skill/.claude-plugin" ]; then
-  echo "Invalid yomiyasu skill directory: $YOMIYASU_DIR/agent-skill" >&2
+if [ ! -f "$YOMIYASU_SKILL_DIR/SKILL.md" ] || [ -L "$YOMIYASU_SKILL_DIR/SKILL.md" ] \
+  || [ ! -f "$YOMIYASU_SKILL_DIR/scripts/yomiyasu_lint.py" ] \
+  || [ -e "$YOMIYASU_SKILL_DIR/.claude-plugin" ]; then
+  echo "Invalid yomiyasu skill directory: $YOMIYASU_SKILL_DIR" >&2
   exit 1
 fi
 
@@ -105,7 +106,7 @@ link_preserving "$HERE/agents/principles.md" "$TARGET_ROOT/.agents/principles.md
 link_preserving "$HERE/agents/writing.md" "$TARGET_ROOT/.agents/writing.md"
 link_preserving "$NATURAL_DIR/skills/natural-japanese" "$TARGET_ROOT/.agents/skills/natural-japanese"
 link_preserving "$NATURAL_DIR/skills/natural-japanese" "$TARGET_ROOT/.claude/skills/natural-japanese"
-link_preserving "$YOMIYASU_DIR/agent-skill" "$TARGET_ROOT/.agents/skills/yomiyasu"
-link_preserving "$YOMIYASU_DIR/agent-skill" "$TARGET_ROOT/.claude/skills/yomiyasu"
+link_preserving "$YOMIYASU_SKILL_DIR" "$TARGET_ROOT/.agents/skills/yomiyasu"
+link_preserving "$YOMIYASU_SKILL_DIR" "$TARGET_ROOT/.claude/skills/yomiyasu"
 echo "Writing rules, yomiyasu, and natural-japanese installed."
 if [ -n "$BACKUP_DIR" ]; then echo "Previous files: $BACKUP_DIR"; fi

@@ -26,6 +26,8 @@ if args[0] == "clone":
     (root / "LICENSE").write_text("MIT License\\n")
     (skill / "SKILL.md").write_text(f"---\\nname: {name}\\ndescription: Test skill\\n---\\n")
     if name == "yomiyasu":
+        (root / ".claude-plugin").mkdir()
+        (root / ".claude-plugin/plugin.json").write_text('{"name":"yomiyasu"}')
         for folder in ("scripts", "references/domains", "assets", ".claude-plugin"):
             (skill / folder).mkdir(parents=True)
         (skill / ".claude-plugin/plugin.json").write_text('{"name":"yomiyasu"}')
@@ -107,6 +109,8 @@ class WritingInstallationTest(unittest.TestCase):
         yomiyasu = agents / "skills/yomiyasu"
         self.assertFalse((yomiyasu / "SKILL.md").is_symlink())
         self.assertFalse((yomiyasu / ".claude-plugin").exists())
+        self.assertFalse(any((parent / ".claude-plugin/plugin.json").exists()
+                             for parent in (yomiyasu.resolve(), *yomiyasu.resolve().parents)))
         self.assertTrue((yomiyasu / "LICENSE").is_file())
         for file in ("scripts/yomiyasu_lint.py", "references/gemini-syntax.md",
                      "references/domains/tech.md", "references/domains/business.md",
